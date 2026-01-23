@@ -27,6 +27,8 @@ namespace UnoConsoleApp
 
             //pop first card off of deck and return
 
+            //make sure to set inPlay to "true" for the card before returning it
+
             throw new NotImplementedException();
         }
 

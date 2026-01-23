@@ -15,17 +15,28 @@ namespace UnoConsoleApp
 
         private bool inPlay = false;
 
-
+        /// <summary>
+        /// Allows other classes to see this card's color
+        /// </summary>
+        /// <returns>This card's color</returns>
         public string getColor()
         {
             return color;
         }
 
+        /// <summary>
+        /// Allows other classes to see this card's type
+        /// </summary>
+        /// <returns>This card's type</returns>
         public string getType()
         {
             return type;
         }
 
+        /// <summary>
+        /// Allows other classes to see if this card is in play
+        /// </summary>
+        /// <returns>If this card is in play</returns>
         public bool getInPlay()
         { 
             return inPlay; 
@@ -43,6 +54,10 @@ namespace UnoConsoleApp
             type = colorType[1];
         }
 
+        /// <summary>
+        /// Allows other classes to tell this card if it is in play
+        /// </summary>
+        /// <param name="isInPlay">Whether this card is in play</param>
         public void setInPlay(bool isInPlay)
         {
             inPlay = isInPlay;
