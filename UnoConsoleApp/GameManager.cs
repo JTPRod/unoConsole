@@ -145,10 +145,72 @@ namespace UnoConsoleApp
             deck.Shuffle();
         }
 
-
+        /// <summary>
+        /// Executes player turn
+        /// </summary>
         private void PlayerTurn()
         {
-            throw new NotImplementedException();
+            //Player turn skipped if under the effects of a "Skip" Card
+            if(skip)
+            {
+                Console.WriteLine("Player turn skipped!");
+                skip = false;
+                return;
+            }
+
+            //Player draws cards and turn ends if under the effects of a "Draw Two" Card
+            if (drawTwo > 0)
+            {
+                for (int i = 0; drawTwo > 0; drawTwo--)
+                {
+                    playerHand.AddCard(deck.Draw());
+                }
+                return;
+            }
+
+            //Get player input
+            string selectionText = opponent.Play(topCard);
+
+            //String validation
+            if (selectionText == null || selectionText.Length == 0 || selectionText == "")
+            {
+                return;
+            }
+
+            //parse int
+            int selection = -1;
+
+            int.TryParse(selectionText, out selection);
+
+            if(selection == -1)
+            {
+                return;
+            }
+
+            //Validate index
+            selection--;
+
+            if(selection < 0 || selection > playerHand.GetHashCode())
+            {
+                return;
+            }
+
+            //Play Card from hand
+            List<Card> cards = playerHand.GetHand();
+            Card playedCard = cards[selection];
+            playerHand.RemoveCard(playedCard);
+            PlayCard(playedCard);
+
+            //Check for Uno or GameWon
+            if (playerHand.GetHandSize() == 1)
+            {
+                new UI().Uno();
+            }
+            else if (playerHand.GetHandSize() == 0)
+            {
+                new UI().DeclareWinner(1);
+                gameState = GameState.GAMEOVER;
+            }
         }
 
 
@@ -157,8 +219,16 @@ namespace UnoConsoleApp
         /// </summary>
         private void ComputerTurn()
         {
+            //Opponent turn skipped if under the effects of a "Skip" Card
+            if (skip)
+            {
+                Console.WriteLine("Opponent turn skipped!");
+                skip = false;
+                return;
+            }
+
             //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
-            if(drawTwo > 0)
+            if (drawTwo > 0)
             {
                 for(int i = 0; drawTwo > 0; drawTwo--)
                 {
@@ -176,7 +246,6 @@ namespace UnoConsoleApp
 
             if(cardText == "No cards")
             {
-                //new UI().DeclareWinner(2);
                 gameState = GameState.GAMEOVER;
             }
 
