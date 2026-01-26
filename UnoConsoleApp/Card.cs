@@ -15,6 +15,12 @@ namespace UnoConsoleApp
 
         private bool inPlay = false;
 
+        public Card(string color, string type)
+        {
+            this.color = color;
+            this.type = type;
+        }
+
         /// <summary>
         /// Allows other classes to see this card's color
         /// </summary>
@@ -43,15 +49,12 @@ namespace UnoConsoleApp
         }
 
         /// <summary>
-        /// Sets card color and type
+        /// Sets card color
         /// </summary>
-        /// <param name="color">Color and Type formated in string "[color] [type]"</param>
+        /// <param name="color">Color of the card</param>
         public void setColor(string color)
         {
-            string[] colorType = color.Split(' ');
-
-            color = colorType[0];
-            type = colorType[1];
+            this.color = color;
         }
 
         /// <summary>
