@@ -35,9 +35,13 @@
             Card playerCard = null;
             while(!validInput)
             {
-
-                // display top card, and all cards in player hand (with number options), and -1 to draw
                 Console.WriteLine("Please Select A Card To Play: ");
+                Console.WriteLine("[0] - Draw");
+                for (int i = 0; i < playerHand.GetHandSize(); i++)
+                {
+                    Console.WriteLine("[" + (i + 1) + "] - " + playerHand.GetHand(i));
+                }
+           
                 string userInput = Console.ReadLine();
 
                 if (userInput == null)
@@ -54,7 +58,7 @@
                     continue;
                 }
 
-                else if (inputIndex == -1)
+                else if (inputIndex == 0)
                 {
                     Console.WriteLine("You draw cards until you have a card you can play!");
                     GameManager.PlayerDrawUntilCanPlay();
