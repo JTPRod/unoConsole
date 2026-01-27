@@ -16,21 +16,21 @@ namespace UnoConsoleApp
 
     internal class GameManager
     {
-        private Deck deck = new Deck();
+        private static Deck Deck = new Deck();
 
-        private Hand playerHand = new Hand();
+        private static Hand playerHand = new Hand();
 
-        private AI opponent = new AI();
+        private static AI opponent = new AI();
 
-        private GameState gameState = GameState.SETUP;
+        public static GameState gameState = GameState.SETUP;
 
-        private int drawTwo = 0;
+        private static int drawTwo = 0;
 
-        private bool skip = false;
+        private static bool skip = false;
 
-        private int turn = 0;   //Player turn will be 1, Computer turn will be 2, no one's turn will be 0
+        private static int turn = 0;   //Player turn will be 1, Computer turn will be 2, no one's turn will be 0
 
-        private Card topCard = null;
+        private static Card topCard = null;
 
 
 
@@ -41,7 +41,7 @@ namespace UnoConsoleApp
         /// <summary>
         /// Maintains Game Loop
         /// </summary>
-        public void Main()
+        public static void Main()
         {
             bool keepPlaying = true;
             do
@@ -49,21 +49,21 @@ namespace UnoConsoleApp
                 switch (gameState)
                 {
                     case GameState.SETUP:
-                        StartGame(); 
+                        StartGame();
                         break;
 
                     case GameState.PLAY:
-                        PlayGame(); 
+                        PlayGame();
                         break;
 
                     case GameState.GAMEOVER:
-                        string playerResponse = new UI().PromptPlayAgain();
+                        string playerResponse = UI.PromptPlayAgain();
 
-                        if (playerResponse == "False" || playerResponse == "false")
+                        if (playerResponse == "N" || playerResponse == "n")
                         {
                             keepPlaying = false;
                         }
-                        else if(playerResponse == "True" || playerResponse == "true")
+                        else if (playerResponse == "Y" || playerResponse == "y")
                         {
                             ResetGame();
                             gameState = GameState.SETUP;
@@ -79,19 +79,19 @@ namespace UnoConsoleApp
         /// <summary>
         /// Executes the player or opponent turn
         /// </summary>
-        private void PlayGame()
+        private static void PlayGame()
         {
             if (turn == 1)
             {
-                new UI().DisplayCurrentState(0, drawTwo, skip, topCard, playerHand);
-                new UI().DisplayTurn(turn);
+                UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
+                UI.DisplayTurn(turn);
                 PlayerTurn();
                 turn = 2;
             }
             else
             {
-                new UI().DisplayCurrentState(0, drawTwo, skip, topCard, playerHand);
-                new UI().DisplayTurn(turn);
+                UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
+                UI.DisplayTurn(turn);
                 ComputerTurn();
                 turn = 1;
             }
@@ -100,20 +100,19 @@ namespace UnoConsoleApp
         /// <summary>
         /// Sets up the very stard of the game
         /// </summary>
-        private void StartGame()
-        { 
-            deck.Shuffle(); //shuffle deck
-            
+        private static void StartGame()
+        {
+            Deck.Shuffle(); //shuffle Deck
+
             //opponent and player draw hand of seven cards
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 opponent.DrawCard();
-                playerHand.AddCard(deck.Draw());
+                playerHand.AddCard(Deck.Draw());
             }
 
-            UI ui = new UI();
-            ui.DisplayGameReset();
-            ui.DisplayCurrentState(0, drawTwo, skip, topCard, playerHand);
+            UI.DisplayGameReset();
+            UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
 
             turn = 1;
         }
@@ -121,37 +120,36 @@ namespace UnoConsoleApp
         /// <summary>
         /// Resets state of the game after game ends
         /// </summary>
-        private void ResetGame()
+        private static void ResetGame()
         {
             List<Card> cards = playerHand.GetHand();
-           
+
 
             //reset all cards in players hand, and remove them from hand
-            for(int i = 0; i < cards.Count(); i++)
+            while (cards.Count() > 0)
             {
                 if (cards.Count() <= 0) break;
                 Card card = cards[0];
                 card.setInPlay(false);
                 if (card.getType() == "Wild" || card.getType() == "wild")
                 {
-                    card.setColor("null Wild");
+                    card.setColor("null");
                 }
                 cards.RemoveAt(0);
             }
 
-            //Would do the same as with the player with the AI/Computer/Opponent, but due to a UML issue, this is not possible
+            opponent.Reset();   //reset all cards in the AI/Compuer/Opponent's hand
 
-
-            deck.Shuffle();
+            Deck.Shuffle();
         }
 
         /// <summary>
         /// Executes player turn
         /// </summary>
-        private void PlayerTurn()
+        private static void PlayerTurn()
         {
             //Player turn skipped if under the effects of a "Skip" Card
-            if(skip)
+            if (skip)
             {
                 Console.WriteLine("Player turn skipped!");
                 skip = false;
@@ -163,52 +161,39 @@ namespace UnoConsoleApp
             {
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
-                    playerHand.AddCard(deck.Draw());
+                    playerHand.AddCard(Deck.Draw());
                 }
                 return;
             }
 
             //Get player input
-            string selectionText = opponent.Play(topCard);
+            Card card = UI.PromptPlayerTurn(topCard, playerHand);
 
-            //String validation
-            if (selectionText == null || selectionText.Length == 0 || selectionText == "")
+            playerHand.RemoveCard(card);
+            PlayCard(card);
+
+            //Return if a card was not played
+            if (card == null)
             {
                 return;
             }
 
-            //parse int
-            int selection = -1;
-
-            int.TryParse(selectionText, out selection);
-
-            if(selection == -1)
+            //Select color if card was wild card
+            if (card.getType() == "Wild" || card.getType() == "wild")
             {
-                return;
+                string color = UI.PromptSelectColor();
+
+                card.setColor(color);
             }
-
-            //Validate index
-            selection--;
-
-            if(selection < 0 || selection > playerHand.GetHashCode())
-            {
-                return;
-            }
-
-            //Play Card from hand
-            List<Card> cards = playerHand.GetHand();
-            Card playedCard = cards[selection];
-            playerHand.RemoveCard(playedCard);
-            PlayCard(playedCard);
 
             //Check for Uno or GameWon
             if (playerHand.GetHandSize() == 1)
             {
-                new UI().Uno();
+                UI.Uno();
             }
             else if (playerHand.GetHandSize() == 0)
             {
-                new UI().DeclareWinner(1);
+                UI.DeclareWinner(1);
                 gameState = GameState.GAMEOVER;
             }
         }
@@ -217,7 +202,7 @@ namespace UnoConsoleApp
         /// <summary>
         /// Executes Computer Turn
         /// </summary>
-        private void ComputerTurn()
+        private static void ComputerTurn()
         {
             //Opponent turn skipped if under the effects of a "Skip" Card
             if (skip)
@@ -230,29 +215,14 @@ namespace UnoConsoleApp
             //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
             if (drawTwo > 0)
             {
-                for(int i = 0; drawTwo > 0; drawTwo--)
+                for (int i = 0; drawTwo > 0; drawTwo--)
                 {
                     opponent.DrawCard();
                 }
                 return;
             }
 
-            string cardText = opponent.Play(topCard);
-
-            if(cardText == null || cardText.Length == 0 || cardText == "")
-            {
-                return;
-            }
-
-            if(cardText == "No cards")
-            {
-                gameState = GameState.GAMEOVER;
-            }
-
-            Card playedCard = new Card();
-            playedCard.setColor(cardText);
-
-            PlayCard(playedCard);
+            opponent.Play(topCard);
         }
 
         /// <summary>
@@ -260,7 +230,7 @@ namespace UnoConsoleApp
         /// </summary>
         /// <param name="card">Card being validated</param>
         /// <returns>Whether card is valid</returns>
-        public bool ValidateCard(Card card)
+        public static bool ValidateCard(Card card)
         {
             //if(topCard.getType() == "DrawTwo" && !(card.getType() == "DrawTwo"))
             //{
@@ -272,12 +242,12 @@ namespace UnoConsoleApp
                 return true;
             }
 
-            if(card.getType() == topCard.getType())
+            if (card.getType() == topCard.getType())
             {
                 return true;
             }
 
-            if(card.getColor() == topCard.getColor())
+            if (card.getColor() == topCard.getColor())
             {
                 return true;
             }
@@ -289,7 +259,7 @@ namespace UnoConsoleApp
         /// Adds card to top of discard pile
         /// </summary>
         /// <param name="card">Card being played</param>
-        public void PlayCard(Card card)
+        public static void PlayCard(Card card)
         {
             topCard.setInPlay(false);
             topCard = card;
@@ -299,21 +269,45 @@ namespace UnoConsoleApp
                 skip = true;
             }
 
-            if(topCard.getType() == "DrawTwo")
+            if (topCard.getType() == "DrawTwo")
             {
                 drawTwo += 2;
             }
+        }
 
-            if(topCard.getType() == "Wild" || topCard.getType() == "wild")
+        /// <summary>
+        /// The player draws cards until they can play a card
+        /// </summary>
+        public static void PlayerDrawUntilCanPlay()
+        {
+            //Draw cards until a card can be played
+            while (true)
             {
-                UI ui = new UI();
-                string color = ui.PromptSelectColor();
-                StringBuilder sb = new StringBuilder();
-                sb.Append(color);
-                sb.Append(' ');
-                sb.Append(topCard.GetType());
-                string colorInput = sb.ToString();
-                card.setColor(colorInput);
+                Card c = Deck.Draw();
+
+                Console.WriteLine("You drew: " + c.getColor() + " " + c.getType());
+
+                if (GameManager.ValidateCard(c))
+                {
+                    Console.WriteLine("You can play this! You played " + c.getColor() + " " + c.getType());
+                    GameManager.PlayCard(c);
+                    UI.DisplayComputerPlayCard(c);
+
+                    if (playerHand.GetHandSize() == 1)
+                    {
+                        UI.Uno();
+                    }
+                    else if (playerHand.GetHandSize() == 0)
+                    {
+                        UI.DeclareWinner(2);
+                        GameManager.gameState = GameState.GAMEOVER;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You cannot play this card. You added this card to your hand.");
+                    playerHand.AddCard(c);
+                }
             }
         }
     }

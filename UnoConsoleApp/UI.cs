@@ -1,73 +1,162 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UnoConsoleApp
+﻿namespace UnoConsoleApp
 {
     internal class UI
     {
-        public void DisplayTurn(int turn)
+        public static void DisplayTurn(int turn)
         {
-            throw new NotImplementedException();
+            if(turn == 1){
+                Console.WriteLine("It is YOUR turn");
+            } else {
+                Console.WriteLine("It is THE COMPUTER'S turn");
+            }  
         }
 
-        public void DisplayCurrentState(int opponentHandSize, int drawNumber, bool skip, Card topCard, Hand playerHand)
+        public static void DisplayCurrentState(int opponentHandSize, int drawNumber, bool skip, Card topCard, Hand playerHand) //skip stating number of cards in opponent hand
         {
-            throw new NotImplementedException();
-        }
-
-
-        public void DisplayComputerPlayCard(Card card)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayComputerDrawCard(Card card)
-        {
-            throw new NotImplementedException();
+            Console.WriteLine(topCard);
+            Console.WriteLine(playerHand);
         }
 
 
-        public string PromptPlayerTurn(Card card, Hand playerHand)
+        public static void DisplayComputerPlayCard(Card card)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("COMPUTER played " + card);
         }
 
-        public string PromptPlayAgain()
+        public static void DisplayComputerDrawCard()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("COMPUTER drew a card");
         }
 
-        public string PromptSelectColor()
+
+        public static Card PromptPlayerTurn(Card card, Hand playerHand)
         {
-            throw new NotImplementedException();
+            bool validInput = false;
+            Card playerCard = null;
+            while(!validInput)
+            {
+
+                // display top card, and all cards in player hand (with number options), and -1 to draw
+                Console.WriteLine("Please Select A Card To Play: ");
+                string userInput = Console.ReadLine();
+
+                if (userInput == null)
+                {
+                    Console.WriteLine("Must input value!");
+                    continue;
+                }
+
+                int inputIndex = -457;
+
+                if(!int.TryParse(userInput, out inputIndex))
+                {
+                    Console.WriteLine("Input must be a number!");
+                    continue;
+                }
+
+                else if (inputIndex == -1)
+                {
+                    Console.WriteLine("You draw cards until you have a card you can play!");
+                    GameManager.PlayerDrawUntilCanPlay();
+                    return null;
+                }
+
+                else if(inputIndex < 0 || inputIndex > playerHand.GetHandSize())
+                {
+                    Console.WriteLine("That is not a valid input!");
+                    continue;
+                }
+
+                else
+                {
+                    playerCard = playerHand.GetHand()[inputIndex];
+
+                    if(!GameManager.ValidateCard(playerCard))
+                    {
+                        Console.WriteLine("You can't play that card!");
+                        continue;
+                    }
+                    else
+                    {
+                        validInput = true;
+                    }
+                }
+            }
+            return playerCard;
         }
 
-        public string DisplayColorSelected()      //Another thing marked wrong on the UML
+        public static string PromptPlayAgain()
         {
-            throw new NotImplementedException();
+            bool validInput = false;
+            while (!validInput){
+                Console.WriteLine("Would you like to play again? (Y/N)");
+            string response = Console.ReadLine();
+            if (response == "Y" || response == "y"){
+                validInput = true;
+                return "Y";
+            } else{
+                validInput = true;
+                return "N";
+                }
+            }
+            return "N";
         }
 
-        public void Uno()
+        public static string PromptSelectColor()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Please pick a color to change to (R/Y/G/B)");
+            string colorChosen = Console.ReadLine();
+            switch (colorChosen)
+            {
+                case "R":
+                    return "Red";
+                case "Y":
+                    return "Yellow";
+                case "G":
+                    return "Green";
+                case "B":
+                    return "Blue";
+                case "r":
+                    return "Red";
+                case "y":
+                    return "Yellow";
+                case "g":
+                    return "Green";
+                case "b":
+                    return "Blue";
+                default:
+                    return null;
+            }
         }
 
-        public void DeclareWinner(int winner)
+        public static string DisplayColorSelected(String color)      //Another thing marked wrong on the UML
         {
-            throw new NotImplementedException();
+            Console.WriteLine(color + "was chosen!");
+            return color;
         }
 
-        public void DisplayGameReset()
+        public static void Uno()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("UNO!");
         }
 
-        private void InvalidCardSelection(Card card, int notSureAnymore)
+        public static void DeclareWinner(int winner)
         {
-            throw new NotImplementedException();
+            if(winner == 1){
+                Console.WriteLine("YOU WIN!");
+            }else{
+                Console.WriteLine("YOU LOSE!");
+            }
+        }
+
+        public static void DisplayGameReset()
+        {
+            Console.WriteLine("GAME RESET");
+        }
+
+        private static void InvalidCardSelection(Card card, int notSureAnymore)
+        {
+            Console.WriteLine("Sorry, that is in invalid card. Please select a valid card");
         }
     }
 }

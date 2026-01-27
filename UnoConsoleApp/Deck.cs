@@ -9,113 +9,54 @@ namespace UnoConsoleApp
 {
     internal class Deck
     {
-        private Card[] allCards = new Card[98];
+        private static Card[] allCards = [new Card("Red", "1"), new Card("Red", "2"), new Card("Red", "3"), new Card("Red", "4"), new Card("Red", "5"), new Card("Red", "6"), new Card("Red", "7"), new Card("Red", "8"), new Card("Red", "9"), new Card("Red", "0"), new Card("Red", "Skip"),
+                                          new Card("Yellow", "1"), new Card("Yellow", "2"), new Card("Yellow", "3"), new Card("Yellow", "4"), new Card("Yellow", "5"), new Card("Yellow", "6"), new Card("Yellow", "7"), new Card("Yellow", "8"), new Card("Yellow", "9"), new Card("Yellow", "0"), new Card("Red", "Skip"),
+                                          new Card("Green", "1"), new Card("Green", "2"), new Card("Green", "3"), new Card("Green", "4"), new Card("Green", "5"), new Card("Green", "6"), new Card("Green", "7"), new Card("Green", "8"), new Card("Green", "9"), new Card("Green", "0"), new Card("Red", "Skip"),
+                                          new Card("Blue", "1"), new Card("Blue", "2"), new Card("Blue", "3"), new Card("Blue", "4"), new Card("Blue", "5"), new Card("Blue", "6"), new Card("Blue", "7"), new Card("Blue", "8"), new Card("Blue", "9"), new Card("Blue", "0"), new Card("Red", "Skip"),
+                                          new Card("Red", "1"), new Card("Red", "2"), new Card("Red", "3"), new Card("Red", "4"), new Card("Red", "5"), new Card("Red", "6"), new Card("Red", "7"), new Card("Red", "8"), new Card("Red", "9"), new Card("Red", "Skip"),
+                                          new Card("Yellow", "1"), new Card("Yellow", "2"), new Card("Yellow", "3"), new Card("Yellow", "4"), new Card("Yellow", "5"), new Card("Yellow", "6"), new Card("Yellow", "7"), new Card("Yellow", "8"), new Card("Yellow", "9"), new Card("Yellow", "Skip"),
+                                          new Card("Green", "1"), new Card("Green", "2"), new Card("Green", "3"), new Card("Green", "4"), new Card("Green", "5"), new Card("Green", "6"), new Card("Green", "7"), new Card("Green", "8"), new Card("Green", "9"), new Card("Green", "Skip"),
+                                          new Card("Blue", "1"), new Card("Blue", "2"), new Card("Blue", "3"), new Card("Blue", "4"), new Card("Blue", "5"), new Card("Blue", "6"), new Card("Blue", "7"), new Card("Blue", "8"), new Card("Blue", "9"), new Card("Blue", "Skip"),
+                                          new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild")];
 
-        private List<Card> deck = new List<Card>();
+        private static List<Card> deck = new List<Card>();
 
         /// <summary>
-        /// Generates a random Uno Card and gives it to whoever drew a card
+        /// Returns a random Uno Card from the deck
         /// </summary>
-        /// <returns>A randomly generated Uno Card</returns>
-        public Card Draw()
+        /// <returns>A random Uno Card</returns>
+        public static Card Draw()
         {
             //instantiate Random
             Random rnd = new Random();
-
-            //Generate random card color
-            int colorInt = rnd.Next(1, 4);
-
-            StringBuilder sb = new StringBuilder();
-
-            if (colorInt == 4)
-            {
-                sb.Append("Red ");
-            }
-            else if (colorInt == 3)
-            {
-                sb.Append("Blue ");
-            }
-            else if (colorInt == 2)
-            {
-                sb.Append("Green ");
-            }
-            else
-            {
-                sb.Append("Yellow ");
-            }
-
-            //Generate random card type
-            int typeInt = rnd.Next(1, 13);
-
-            if(typeInt == 1)
-            {
-                sb.Append("1");
-            }
-            else if(typeInt  == 2)
-            {
-                sb.Append("2");
-            }
-            else if(typeInt == 3)
-            {
-                sb.Append("3");
-            }
-            else if(typeInt == 4)
-            {
-                sb.Append("4");
-            }
-            else if (typeInt == 5)
-            {
-                sb.Append("5");
-            }
-            else if (typeInt == 6)
-            {
-                sb.Append("6");
-            }
-            else if(typeInt == 7)
-            {
-                sb.Append("7");
-            }
-            else if(typeInt == 8)
-            {
-                sb.Append("8");
-            }
-            else if(typeInt == 9)
-            {
-                sb.Append("9");
-            }
-            else if(typeInt == 10)
-            {
-                sb.Append("0");
-            }
-            else if(typeInt == 11)
-            {
-                sb.Append("Skip");
-            }
-            else if(typeInt == 12)
-            {
-                sb.Append("DrawTwo");
-            }
-            else
-            {
-                sb.Clear();
-                sb.Append("null Wild");
-            }
-
-            //Configure and return Card
-            string cardInfo = sb.ToString();
-
-            Card card = new Card();
-            card.setColor(cardInfo);
+        
+            int random_index = rnd.Next(0, deck.Count());
+        
+            Card card = deck[random_index];
+        
+            card.setInPlay(true);
+        
+            deck.RemoveAt(random_index);
+        
             return card;
         }
-
+        
         /// <summary>
-        /// This method shows the user that the deck is being shuffled
+        /// This adds the cards that are not in play back into the deck
         /// </summary>
-        public void Shuffle()
+        public static void Shuffle()
         {
-            Console.WriteLine("Shuffling Deck!");
+            //Console.WriteLine("Shuffling Deck!");
+        
+            deck.Clear();
+        
+            foreach (Card card in allCards)
+            { 
+                if(!card.getInPlay())
+                {
+                    deck.Add(card);
+                }
+            }
         }
-
-    }
-}
+        }
+        }
