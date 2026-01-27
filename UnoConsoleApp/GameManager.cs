@@ -103,6 +103,7 @@ namespace UnoConsoleApp
         private static void StartGame()
         {
             Deck.Shuffle(); //shuffle Deck
+            topCard = Deck.Draw();
 
             //opponent and player draw hand of seven cards
             for (int i = 0; i < 7; i++)
@@ -112,9 +113,9 @@ namespace UnoConsoleApp
             }
 
             UI.DisplayGameReset();
-            UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
 
             turn = 1;
+            gameState = GameState.PLAY;
         }
 
         /// <summary>
@@ -169,14 +170,15 @@ namespace UnoConsoleApp
             //Get player input
             Card card = UI.PromptPlayerTurn(topCard, playerHand);
 
-            playerHand.RemoveCard(card);
-            PlayCard(card);
-
             //Return if a card was not played
             if (card == null)
             {
                 return;
             }
+
+            playerHand.RemoveCard(card);
+            PlayCard(card);
+
 
             //Select color if card was wild card
             if (card.getType() == "Wild" || card.getType() == "wild")
@@ -261,6 +263,7 @@ namespace UnoConsoleApp
         /// <param name="card">Card being played</param>
         public static void PlayCard(Card card)
         {
+
             topCard.setInPlay(false);
             topCard = card;
 
@@ -280,8 +283,9 @@ namespace UnoConsoleApp
         /// </summary>
         public static void PlayerDrawUntilCanPlay()
         {
+            bool noPlayableCard = true;
             //Draw cards until a card can be played
-            while (true)
+            while (noPlayableCard)
             {
                 Card c = Deck.Draw();
 
@@ -289,9 +293,24 @@ namespace UnoConsoleApp
 
                 if (GameManager.ValidateCard(c))
                 {
+                    noPlayableCard = false;
+
+                    if (c == null)
+                    {
+                        Console.WriteLine("TEST");
+                    }
                     Console.WriteLine("You can play this! You played " + c.getColor() + " " + c.getType());
+
+                    //Select color if card was wild card
+                    if (c.getType() == "Wild" || c.getType() == "wild")
+                    {
+                        string color = UI.PromptSelectColor();
+
+                        c.setColor(color);
+                    }
+
                     GameManager.PlayCard(c);
-                    UI.DisplayComputerPlayCard(c);
+                    break;
 
                     if (playerHand.GetHandSize() == 1)
                     {

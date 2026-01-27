@@ -31,62 +31,74 @@ namespace UnoConsoleApp
             }
 
             List<Card> cards = hand.GetHand();
+
+            Card cardToPlay = null;
+
             foreach (Card card in cards)
             {
                 if (GameManager.ValidateCard(card))
                 {
-                    hand.RemoveCard(card);
-                    GameManager.PlayCard(card);
-                    UI.DisplayComputerPlayCard(card);
-
-                    if (hand.GetHandSize() == 1)
-                    {
-                        UI.Uno();
-                    }
-                    else if (hand.GetHandSize() == 0)
-                    {
-                        UI.DeclareWinner(2);
-                        GameManager.gameState = GameState.GAMEOVER;
-                    }
+                    cardToPlay = card;
                 }
             }
 
-
-            //Draw cards until a card can be played
-            while (true)
+            //If playable card was found, play card
+            if (cardToPlay != null)
             {
-                Card c = Deck.Draw();
-                UI.DisplayComputerDrawCard();
+                hand.RemoveCard(cardToPlay);
+                GameManager.PlayCard(cardToPlay);
+                UI.DisplayComputerPlayCard(cardToPlay);
 
-                if (GameManager.ValidateCard(c))
+                //Select color if card was wild card
+                if (cardToPlay.getType() == "Wild" || cardToPlay.getType() == "wild")
                 {
-                    GameManager.PlayCard(c);
-                    UI.DisplayComputerPlayCard(c);
+                    string color = SelectColor();
 
-                    //Select color if card was wild card
-                    if (c.getType() == "Wild" || c.getType() == "wild")
-                    {
-                        string color = SelectColor();
-
-                        c.setColor(color);
-                    }
-
-                    if (hand.GetHandSize() == 1)
-                    {
-                        UI.Uno();
-                    }
-                    else if (hand.GetHandSize() == 0)
-                    {
-                        UI.DeclareWinner(2);
-                        GameManager.gameState = GameState.GAMEOVER;
-                    }
+                    cardToPlay.setColor(color);
                 }
-                else
+
+                if (hand.GetHandSize() == 1)
                 {
-                    hand.AddCard(c);
+                    UI.Uno();
+                }
+                else if (hand.GetHandSize() == 0)
+                {
+                    UI.DeclareWinner(2);
+                    GameManager.gameState = GameState.GAMEOVER;
                 }
             }
+            else
+            {
+                bool noPlayableCard = true;
+                //Draw cards until a card can be played
 
+                while (noPlayableCard)
+                {
+                    Card c = Deck.Draw();
+                    UI.DisplayComputerDrawCard();
+
+                    if (GameManager.ValidateCard(c))
+                    {
+                        noPlayableCard = false;
+                        UI.DisplayComputerPlayCard(c);
+
+                        if (hand.GetHandSize() == 1)
+                        {
+                            UI.Uno();
+                        }
+                        else if (hand.GetHandSize() == 0)
+                        {
+                            UI.DeclareWinner(2);
+                            GameManager.gameState = GameState.GAMEOVER;
+                        }
+                    }
+                    else
+                    {
+                        hand.AddCard(c);
+                    }
+                }
+
+            }
         }
         /// <summary>
         /// The Computer/AI/Opponent draws a card

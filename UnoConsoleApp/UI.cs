@@ -13,14 +13,14 @@
 
         public static void DisplayCurrentState(int opponentHandSize, int drawNumber, bool skip, Card topCard, Hand playerHand) //skip stating number of cards in opponent hand
         {
-            Console.WriteLine(topCard);
-            Console.WriteLine(playerHand);
+            Console.WriteLine("COMPUTER hand size: " + opponentHandSize);
         }
 
 
         public static void DisplayComputerPlayCard(Card card)
         {
-            Console.WriteLine("COMPUTER played " + card);
+
+            Console.WriteLine("COMPUTER played " + card.getColor() + " : " + card.getType());
         }
 
         public static void DisplayComputerDrawCard()
@@ -29,17 +29,19 @@
         }
 
 
-        public static Card PromptPlayerTurn(Card card, Hand playerHand)
+        public static Card PromptPlayerTurn(Card topCard, Hand playerHand)
         {
             bool validInput = false;
             Card playerCard = null;
             while(!validInput)
             {
+                Console.WriteLine("Top Card in Play: " + topCard.getColor() + " : " + topCard.getType());
                 Console.WriteLine("Please Select A Card To Play: ");
                 Console.WriteLine("[0] - Draw");
                 for (int i = 0; i < playerHand.GetHandSize(); i++)
                 {
-                    Console.WriteLine("[" + (i + 1) + "] - " + playerHand.GetHand(i));
+                    Card card = playerHand.GetHand()[i];
+                    Console.WriteLine("[" + (i + 1) + "] - " + card.getColor() + " : " + card.getType());
                 }
            
                 string userInput = Console.ReadLine();
@@ -47,7 +49,6 @@
                 if (userInput == null)
                 {
                     Console.WriteLine("Must input value!");
-                    continue;
                 }
 
                 int inputIndex = -457;
@@ -55,7 +56,6 @@
                 if(!int.TryParse(userInput, out inputIndex))
                 {
                     Console.WriteLine("Input must be a number!");
-                    continue;
                 }
 
                 else if (inputIndex == 0)
@@ -68,17 +68,15 @@
                 else if(inputIndex < 0 || inputIndex > playerHand.GetHandSize())
                 {
                     Console.WriteLine("That is not a valid input!");
-                    continue;
                 }
 
                 else
                 {
-                    playerCard = playerHand.GetHand()[inputIndex];
+                    playerCard = playerHand.GetHand()[inputIndex - 1];
 
                     if(!GameManager.ValidateCard(playerCard))
                     {
                         Console.WriteLine("You can't play that card!");
-                        continue;
                     }
                     else
                     {
@@ -133,7 +131,7 @@
             }
         }
 
-        public static string DisplayColorSelected(String color)      //Another thing marked wrong on the UML
+        public static string DisplayColorSelected(String color)
         {
             Console.WriteLine(color + "was chosen!");
             return color;

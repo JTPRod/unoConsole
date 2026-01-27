@@ -27,6 +27,11 @@ namespace UnoConsoleApp
         /// <returns>A random Uno Card</returns>
         public static Card Draw()
         {
+            if(deck.Count() == 0)
+            {
+                Deck.Shuffle();
+            }
+
             //instantiate Random
             Random rnd = new Random();
         
@@ -46,7 +51,7 @@ namespace UnoConsoleApp
         /// </summary>
         public static void Shuffle()
         {
-            //Console.WriteLine("Shuffling Deck!");
+            Console.WriteLine("\nShuffling Deck!\n");
         
             deck.Clear();
         
@@ -54,6 +59,11 @@ namespace UnoConsoleApp
             { 
                 if(!card.getInPlay())
                 {
+                    if(card.getType() == "Wild" || card.getType() == "wild")
+                    {
+                        card.setColor("NULL");
+                    }
+
                     deck.Add(card);
                 }
             }

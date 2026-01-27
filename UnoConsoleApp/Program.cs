@@ -1,7 +1,3 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using UnoConsoleApp;
 
-
-
-
-Console.WriteLine("Hello! This is Working!");
+GameManager.Main();
