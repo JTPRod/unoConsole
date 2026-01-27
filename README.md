@@ -42,7 +42,8 @@ The Wild Card you played will now be the color you selected while it is the top 
 To Play Again -- When the game ends, you will be prompted with the question "Would you like to play again? (Y/N)". To play again, type "Y" or "y" and hit enter. The game will restart. To exit program, 
 type "N", or "n" and hit enter. The game can be played again at any time by restarting the program.
 <br><br><br>
-RULES:
+### RULES:
+<br>
 -- Both the player and computer will start with seven cards in their hand. One card will be selected for use as the top card in play.
 <br>
 -- On your turn, you may play up to one card.
