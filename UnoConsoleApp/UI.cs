@@ -5,22 +5,22 @@
         public static void DisplayTurn(int turn)
         {
             if(turn == 1){
-                Console.WriteLine("It is YOUR turn");
+                Console.WriteLine("\nIt is YOUR turn\n");
             } else {
-                Console.WriteLine("It is THE COMPUTER'S turn");
+                Console.WriteLine("\nIt is THE COMPUTER'S turn\n");
             }  
         }
 
         public static void DisplayCurrentState(int opponentHandSize, int drawNumber, bool skip, Card topCard, Hand playerHand) //skip stating number of cards in opponent hand
         {
-            Console.WriteLine("COMPUTER hand size: " + opponentHandSize);
+            Console.WriteLine("\nCOMPUTER hand size: " + opponentHandSize + "\n");
         }
 
 
         public static void DisplayComputerPlayCard(Card card)
         {
 
-            Console.WriteLine("COMPUTER played " + card.getColor() + " : " + card.getType());
+            Console.WriteLine("\nCOMPUTER played " + card.getColor() + " : " + card.getType() + "\n");
         }
 
         public static void DisplayComputerDrawCard()
@@ -35,9 +35,9 @@
             Card playerCard = null;
             while(!validInput)
             {
-                Console.WriteLine("Top Card in Play: " + topCard.getColor() + " : " + topCard.getType());
-                Console.WriteLine("Please Select A Card To Play: ");
-                Console.WriteLine("[0] - Draw");
+                Console.WriteLine("\nTop Card in Play: " + topCard.getColor() + " : " + topCard.getType() + "\n");
+                Console.WriteLine("\nPlease Select A Card To Play: \n");
+                Console.WriteLine("\n[0] - Draw");
                 for (int i = 0; i < playerHand.GetHandSize(); i++)
                 {
                     Card card = playerHand.GetHand()[i];
@@ -48,26 +48,26 @@
 
                 if (userInput == null)
                 {
-                    Console.WriteLine("Must input value!");
+                    Console.WriteLine("\nMust input value!\n");
                 }
 
                 int inputIndex = -457;
 
                 if(!int.TryParse(userInput, out inputIndex))
                 {
-                    Console.WriteLine("Input must be a number!");
+                    Console.WriteLine("\nInput must be a number!\n");
                 }
 
                 else if (inputIndex == 0)
                 {
-                    Console.WriteLine("You draw cards until you have a card you can play!");
+                    Console.WriteLine("\nYou draw cards until you have a card you can play!\n");
                     GameManager.PlayerDrawUntilCanPlay();
                     return null;
                 }
 
                 else if(inputIndex < 0 || inputIndex > playerHand.GetHandSize())
                 {
-                    Console.WriteLine("That is not a valid input!");
+                    Console.WriteLine("\nThat is not a valid input!");
                 }
 
                 else
@@ -76,7 +76,7 @@
 
                     if(!GameManager.ValidateCard(playerCard))
                     {
-                        Console.WriteLine("You can't play that card!");
+                        Console.WriteLine("\nYou can't play that card!");
                     }
                     else
                     {
@@ -91,7 +91,7 @@
         {
             bool validInput = false;
             while (!validInput){
-                Console.WriteLine("Would you like to play again? (Y/N)");
+                Console.WriteLine("\nWould you like to play again? (Y/N)");
             string response = Console.ReadLine();
             if (response == "Y" || response == "y"){
                 validInput = true;
@@ -106,7 +106,7 @@
 
         public static string PromptSelectColor()
         {
-            Console.WriteLine("Please pick a color to change to (R/Y/G/B)");
+            Console.WriteLine("\nPlease pick a color to change to (R/Y/G/B)");
             string colorChosen = Console.ReadLine();
             switch (colorChosen)
             {

@@ -176,6 +176,7 @@ namespace UnoConsoleApp
                 return;
             }
 
+            Console.WriteLine("\nYou played " + card.getColor() + " : " + card.getType() + "\n");
             playerHand.RemoveCard(card);
             PlayCard(card);
 
@@ -209,7 +210,7 @@ namespace UnoConsoleApp
             //Opponent turn skipped if under the effects of a "Skip" Card
             if (skip)
             {
-                Console.WriteLine("Opponent turn skipped!");
+                Console.WriteLine("\nOpponent turn skipped!\n");
                 skip = false;
                 return;
             }
@@ -289,7 +290,7 @@ namespace UnoConsoleApp
             {
                 Card c = Deck.Draw();
 
-                Console.WriteLine("You drew: " + c.getColor() + " " + c.getType());
+                Console.WriteLine("\nYou drew: " + c.getColor() + " " + c.getType());
 
                 if (GameManager.ValidateCard(c))
                 {
@@ -299,7 +300,7 @@ namespace UnoConsoleApp
                     {
                         Console.WriteLine("TEST");
                     }
-                    Console.WriteLine("You can play this! You played " + c.getColor() + " " + c.getType());
+                    Console.WriteLine("\nYou can play this! \nYou played " + c.getColor() + " " + c.getType());
 
                     //Select color if card was wild card
                     if (c.getType() == "Wild" || c.getType() == "wild")
@@ -324,7 +325,7 @@ namespace UnoConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine("You cannot play this card. You added this card to your hand.");
+                    Console.WriteLine("\nYou cannot play this card. You added this card to your hand.\n");
                     playerHand.AddCard(c);
                 }
             }
