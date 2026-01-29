@@ -36,6 +36,11 @@ namespace UnoConsoleApp
 
             foreach (Card card in cards)
             {
+                //if (card.getColor() == "NULL")
+                //{
+                //    Console.WriteLine("");
+                //}
+
                 if (GameManager.ValidateCard(card))
                 {
                     cardToPlay = card;
@@ -45,17 +50,17 @@ namespace UnoConsoleApp
             //If playable card was found, play card
             if (cardToPlay != null)
             {
-                hand.RemoveCard(cardToPlay);
-                GameManager.PlayCard(cardToPlay);
-                UI.DisplayComputerPlayCard(cardToPlay);
-
                 //Select color if card was wild card
-                if (cardToPlay.getType() == "Wild" || cardToPlay.getType() == "wild")
+                if (cardToPlay.getType() == "Wild" || cardToPlay.getType() == "wild" || cardToPlay.getColor() == "NULL")
                 {
                     string color = SelectColor();
 
                     cardToPlay.setColor(color);
                 }
+
+                hand.RemoveCard(cardToPlay);
+                GameManager.PlayCard(cardToPlay);
+                UI.DisplayComputerPlayCard(cardToPlay);
 
                 if (hand.GetHandSize() == 1)
                 {
@@ -81,6 +86,7 @@ namespace UnoConsoleApp
                     {
                         noPlayableCard = false;
                         UI.DisplayComputerPlayCard(c);
+                        GameManager.PlayCard(c);
 
                         if (hand.GetHandSize() == 1)
                         {

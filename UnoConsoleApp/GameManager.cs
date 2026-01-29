@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,13 @@ namespace UnoConsoleApp
         /// </summary>
         private static void PlayGame()
         {
+            //Handle any case where TopCard may be wild card with color "NULL" at start of turn (such as if it was the first TopCard of the game)
+            if(topCard.getColor() == "NULL")
+            {
+                string color = opponent.SelectColor();
+                topCard.setColor(color);
+            }
+
             if (turn == 1)
             {
                 UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
@@ -112,8 +120,6 @@ namespace UnoConsoleApp
                 playerHand.AddCard(Deck.Draw());
             }
 
-            UI.DisplayGameReset();
-
             turn = 1;
             gameState = GameState.PLAY;
         }
@@ -141,7 +147,7 @@ namespace UnoConsoleApp
 
             opponent.Reset();   //reset all cards in the AI/Compuer/Opponent's hand
 
-            Deck.Shuffle();
+            UI.DisplayGameReset();
         }
 
         /// <summary>
@@ -152,7 +158,7 @@ namespace UnoConsoleApp
             //Player turn skipped if under the effects of a "Skip" Card
             if (skip)
             {
-                Console.WriteLine("Player turn skipped!");
+                Console.WriteLine("\nPlayer turn skipped!");
                 skip = false;
                 return;
             }
@@ -176,7 +182,14 @@ namespace UnoConsoleApp
                 return;
             }
 
-            Console.WriteLine("\nYou played " + card.getColor() + " : " + card.getType() + "\n");
+            Console.Write("\nYou played ");
+            if (card.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
+            if (card.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
+            if (card.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
+            if (card.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
+            if (card.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(card.getColor() + " : " + card.getType() + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
             playerHand.RemoveCard(card);
             PlayCard(card);
 
@@ -210,7 +223,7 @@ namespace UnoConsoleApp
             //Opponent turn skipped if under the effects of a "Skip" Card
             if (skip)
             {
-                Console.WriteLine("\nOpponent turn skipped!\n");
+                Console.WriteLine("\nOpponent turn skipped!");
                 skip = false;
                 return;
             }
@@ -290,7 +303,14 @@ namespace UnoConsoleApp
             {
                 Card c = Deck.Draw();
 
-                Console.WriteLine("\nYou drew: " + c.getColor() + " " + c.getType());
+                Console.Write("\nYou drew: ");
+                if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
+                if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
+                if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
+                if (c.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
+                if (c.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(c.getColor() + " " + c.getType());
+                Console.ForegroundColor = ConsoleColor.White;
 
                 if (GameManager.ValidateCard(c))
                 {
@@ -300,7 +320,14 @@ namespace UnoConsoleApp
                     {
                         Console.WriteLine("TEST");
                     }
-                    Console.WriteLine("\nYou can play this! \nYou played " + c.getColor() + " " + c.getType());
+                    Console.Write("You can play this! \nYou played ");
+                    if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
+                    if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
+                    if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
+                    if (c.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
+                    if (c.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(c.getColor() + " " + c.getType());
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     //Select color if card was wild card
                     if (c.getType() == "Wild" || c.getType() == "wild")
@@ -325,7 +352,7 @@ namespace UnoConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine("\nYou cannot play this card. You added this card to your hand.\n");
+                    Console.WriteLine("You cannot play this card. You added this card to your hand.");
                     playerHand.AddCard(c);
                 }
             }
