@@ -13,50 +13,50 @@ namespace UnoConsoleApp
         /// Tests if the GameManager's ValidateCard function is working correctly.
         /// Testing equires the "TopCard" variable in GameManager to be made public.
         /// </summary>
-       //public static void TestCardValidation()
-       //{
-       //    Card top = new Card("Blue", "7");
-       //    Card failingCard = new Card("Red", "Skip");
-       //    Card passingColor = new Card("Blue", "3");
-       //    Card passingType = new Card("Yellow", "7");
-       //    Card passingWild = new Card("NULL", "Wild");
-       //
-       //    Console.WriteLine("Testing Card Validation Function");
-       //
-       //    GameManager.topCard = top;
-       //
-       //    if(GameManager.ValidateCard(failingCard))
-       //    {
-       //        Console.WriteLine("Fail: Incorrectly validated a failing card.");
-       //    } else
-       //    {
-       //        Console.WriteLine("Pass: Correctly invalidated a failing card.");
-       //    }
-       //
-       //    if(GameManager.ValidateCard(passingColor))
-       //    {
-       //        Console.WriteLine("Pass: Correctly validated card with matching color.");
-       //    } else
-       //    {
-       //        Console.WriteLine("Fail: Failed to validate card with matching color.");
-       //    }
-       //
-       //    if(GameManager.ValidateCard(passingType))
-       //    {
-       //        Console.WriteLine("Pass: Correctly validated card with matching type.");
-       //    } else
-       //    {
-       //        Console.WriteLine("Fail: Failed to validate card with matching type.");
-       //    }
-       //
-       //    if(GameManager.ValidateCard(passingWild))
-       //    {
-       //        Console.WriteLine("Pass: Correctly validated Wild Card");
-       //    }else
-       //    {
-       //        Console.WriteLine("Fail: Failed to validate Wild Card");
-       //    }
-       //}
+      //public static void TestCardValidation(string topCardColor, string topCardType, string otherColor, string otherType)
+      //{
+      //    Card top = new Card(topCardColor, topCardType);
+      //    Card failingCard = new Card(otherColor, otherType);
+      //    Card passingColor = new Card(topCardColor, otherType);
+      //    Card passingType = new Card(otherColor, topCardType);
+      //    Card passingWild = new Card("NULL", "Wild");
+      //
+      //    Console.WriteLine("Testing Card Validation Function");
+      //
+      //    GameManager.topCard = top;
+      //
+      //    if(GameManager.ValidateCard(failingCard))
+      //    {
+      //        Console.WriteLine("Fail: Incorrectly validated a failing card.");
+      //    } else
+      //    {
+      //        Console.WriteLine("Pass: Correctly invalidated a failing card.");
+      //    }
+      //
+      //    if(GameManager.ValidateCard(passingColor))
+      //    {
+      //        Console.WriteLine("Pass: Correctly validated card with matching color.");
+      //    } else
+      //    {
+      //        Console.WriteLine("Fail: Failed to validate card with matching color.");
+      //    }
+      //
+      //    if(GameManager.ValidateCard(passingType))
+      //    {
+      //        Console.WriteLine("Pass: Correctly validated card with matching type.");
+      //    } else
+      //    {
+      //        Console.WriteLine("Fail: Failed to validate card with matching type.");
+      //    }
+      //
+      //    if(GameManager.ValidateCard(passingWild))
+      //    {
+      //        Console.WriteLine("Pass: Correctly validated Wild Card");
+      //    }else
+      //    {
+      //        Console.WriteLine("Fail: Failed to validate Wild Card");
+      //    }
+      //}
 
 
 
@@ -66,27 +66,27 @@ namespace UnoConsoleApp
         /// Testing equires the "TopCard" and "skip" variables in GameManager 
         /// to be made public.
         /// </summary>
-       //public static void TestPlayCard()
+       //public static void TestPlayCard(string colorOne, string colorTwo, string typeOne, string typeTwo)
        //{
-       //    Console.WriteLine("Testing Play Card Function");
+       //    Console.WriteLine("Testing Play Card Function:");
        //
-       //    Card top = new Card("Blue", "7");
-       //    Card testSameColorCard = new Card("Blue", "3");
-       //    Card testSameTypeCard = new Card("Yellow", "3");
-       //    Card testSkipCard = new Card("Yellow", "Skip");
+       //    Card top = new Card(colorOne, typeOne);
+       //    Card testSameColorCard = new Card(colorOne, typeTwo);
+       //    Card testSameTypeCard = new Card(colorTwo, typeTwo);
+       //    Card testSkipCard = new Card(colorTwo, "Skip");
        //
        //    GameManager.topCard = top;
        //
-       //    Console.WriteLine("Testing Card of same color");
+       //    Console.WriteLine("Testing Card of same color...");
        //    GameManager.PlayCard(testSameColorCard);
        //
-       //    if (GameManager.topCard.getColor() == "Blue" && GameManager.topCard.getType() == "3" && !GameManager.skip)
+       //    if (GameManager.topCard.getColor() == colorOne && GameManager.topCard.getType() == typeTwo && !GameManager.skip)
        //    {
        //        Console.WriteLine("Pass: Correctly played card.");
-       //    } else if (GameManager.topCard.getColor() == "Blue" && GameManager.topCard.getType() == "3" && GameManager.skip)
+       //    } else if (GameManager.topCard.getColor() == colorOne && GameManager.topCard.getType() == typeTwo && GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Correctly replaced topCard, but incorrectly identified a 'Skip' Card.");
-       //    } else if((GameManager.topCard.getColor() != "Blue" || GameManager.topCard.getType() != "3") && !GameManager.skip)
+       //    } else if((GameManager.topCard.getColor() != colorOne || GameManager.topCard.getType() != typeTwo) && !GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Failed to replace topCard.");
        //    } else
@@ -95,18 +95,18 @@ namespace UnoConsoleApp
        //    }
        //
        //
-       //    Console.WriteLine("Testing Card of same type");
+       //    Console.WriteLine("Testing Card of same type...");
        //    GameManager.PlayCard(testSameTypeCard);
        //
-       //    if (GameManager.topCard.getColor() == "Yellow" && GameManager.topCard.getType() == "3" && !GameManager.skip)
+       //    if (GameManager.topCard.getColor() == colorTwo && GameManager.topCard.getType() == typeTwo && !GameManager.skip)
        //    {
        //        Console.WriteLine("Pass: Correctly played card.");
        //    }
-       //    else if (GameManager.topCard.getColor() == "Yellow" && GameManager.topCard.getType() == "3" && GameManager.skip)
+       //    else if (GameManager.topCard.getColor() == colorTwo && GameManager.topCard.getType() == typeTwo && GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Correctly replaced topCard, but incorrectly identified a 'Skip' Card.");
        //    }
-       //    else if ((GameManager.topCard.getColor() != "Yellow" || GameManager.topCard.getType() != "3") && !GameManager.skip)
+       //    else if ((GameManager.topCard.getColor() != colorTwo || GameManager.topCard.getType() != typeTwo) && !GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Failed to replace topCard.");
        //    }
@@ -116,18 +116,18 @@ namespace UnoConsoleApp
        //    }
        //
        //
-       //    Console.WriteLine("Testing Skip Card");
+       //    Console.WriteLine("Testing Skip Card...");
        //    GameManager.PlayCard(testSkipCard);
        //
-       //    if (GameManager.topCard.getColor() == "Yellow" && GameManager.topCard.getType() == "Skip" && GameManager.skip)
+       //    if (GameManager.topCard.getColor() == colorTwo && GameManager.topCard.getType() == "Skip" && GameManager.skip)
        //    {
        //        Console.WriteLine("Pass: Correctly played card and correctly identified a 'Skip' Card.");
        //    }
-       //    else if (GameManager.topCard.getColor() == "Yellow" && GameManager.topCard.getType() == "Skip" && !GameManager.skip)
+       //    else if (GameManager.topCard.getColor() == colorTwo && GameManager.topCard.getType() == "Skip" && !GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Correctly replaced topCard, but failed to identify a 'Skip' Card.");
        //    }
-       //    else if ((GameManager.topCard.getColor() != "Yellow" || GameManager.topCard.getType() != "Skip") && GameManager.skip)
+       //    else if ((GameManager.topCard.getColor() != colorTwo || GameManager.topCard.getType() != "Skip") && GameManager.skip)
        //    {
        //        Console.WriteLine("Fail: Correctly identified a 'Skip' Card, but failed to replace topCard.");
        //    }
