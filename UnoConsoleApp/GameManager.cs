@@ -33,6 +33,8 @@ namespace UnoConsoleApp
 
         private static Card topCard = null;
 
+        public bool isAttack = false; //Indicates if player wants to play UnoAttack or Traditional Uno
+
 
 
 
@@ -83,7 +85,7 @@ namespace UnoConsoleApp
         private static void PlayGame()
         {
             //Handle any case where TopCard may be wild card with color "NULL" at start of turn (such as if it was the first TopCard of the game)
-            if(topCard.getColor() == "NULL")
+            if (topCard.getColor() == "NULL")
             {
                 string color = opponent.SelectColor();
                 topCard.setColor(color);
@@ -102,6 +104,9 @@ namespace UnoConsoleApp
                 UI.DisplayTurn(turn);
                 ComputerTurn();
                 turn = 1;
+
+                Console.Write("\n(Hit Enter to Continue)");
+                string pause = Console.ReadLine();
             }
         }
 
@@ -110,6 +115,9 @@ namespace UnoConsoleApp
         /// </summary>
         private static void StartGame()
         {
+            skip = false;
+            drawTwo = 0;
+
             Deck.Shuffle(); //shuffle Deck
             topCard = Deck.Draw();
 
@@ -158,17 +166,36 @@ namespace UnoConsoleApp
             //Player turn skipped if under the effects of a "Skip" Card
             if (skip)
             {
-                Console.WriteLine("\nPlayer turn skipped!");
+                Console.WriteLine("\nSkip Card in play! Player turn skipped!");
                 skip = false;
+
+                Console.Write("\n(Hit Enter to Continue)");
+                string pause = Console.ReadLine();
                 return;
             }
 
             //Player draws cards and turn ends if under the effects of a "Draw Two" Card
             if (drawTwo > 0)
             {
+                Console.WriteLine("\nDraw Two Card in play! Player must draw two cards and skip their turn!");
+
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
+                    Card c = Deck.Draw();
+                    Console.Write("\nYou drew a ");
+                    if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
+                    if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
+                    if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
+                    if (c.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
+                    if (c.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(c.getColor() + " : " + c.getType());
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Console.WriteLine(" and added it to your hand.");
                     playerHand.AddCard(Deck.Draw());
+
+                    Console.Write("\n(Hit Enter to Continue)");
+                    string pause = Console.ReadLine();
                 }
                 return;
             }
@@ -223,7 +250,7 @@ namespace UnoConsoleApp
             //Opponent turn skipped if under the effects of a "Skip" Card
             if (skip)
             {
-                Console.WriteLine("\nOpponent turn skipped!");
+                Console.WriteLine("\nSkip Card in play! Opponent turn skipped!");
                 skip = false;
                 return;
             }
@@ -231,6 +258,8 @@ namespace UnoConsoleApp
             //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
             if (drawTwo > 0)
             {
+                Console.WriteLine("\nDraw Two Card in play! Opponent must draw two cards and skip their turn!");
+
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
                     opponent.DrawCard();
@@ -239,6 +268,9 @@ namespace UnoConsoleApp
             }
 
             opponent.Play(topCard);
+
+            //Console.Write("\n(Hit Enter to Continue)");
+            //string pause = Console.ReadLine();
         }
 
         /// <summary>
@@ -320,7 +352,7 @@ namespace UnoConsoleApp
                     {
                         Console.WriteLine("TEST");
                     }
-                    Console.Write("You can play this! \nYou played ");
+                    Console.Write("You can play this! \n\nYou played ");
                     if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
                     if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
                     if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
@@ -338,7 +370,6 @@ namespace UnoConsoleApp
                     }
 
                     GameManager.PlayCard(c);
-                    break;
 
                     if (playerHand.GetHandSize() == 1)
                     {
@@ -349,11 +380,19 @@ namespace UnoConsoleApp
                         UI.DeclareWinner(2);
                         GameManager.gameState = GameState.GAMEOVER;
                     }
+
+                    Console.Write("\n(Hit Enter to Continue)");
+                    string pause = Console.ReadLine();
+
+                    break;
                 }
                 else
                 {
                     Console.WriteLine("You cannot play this card. You added this card to your hand.");
                     playerHand.AddCard(c);
+
+                    Console.Write("\n(Hit Enter to Continue)");
+                    string pause = Console.ReadLine();
                 }
             }
         }
