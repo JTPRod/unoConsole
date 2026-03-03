@@ -33,8 +33,6 @@ namespace UnoConsoleApp
 
         private static Card topCard = null;
 
-        public bool isAttack = false; //Indicates if player wants to play UnoAttack or Traditional Uno
-
 
 
 
