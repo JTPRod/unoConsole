@@ -206,9 +206,19 @@
             Console.WriteLine("\nGAME RESET");
         }
 
-        private static void InvalidCardSelection(Card card, int notSureAnymore)
+        public static string promptGamemode()
         {
-            Console.WriteLine("Sorry, that is in invalid card. Please select a valid card");
+            Console.WriteLine("Please select game mode:\n1 - Classic\n2 - Uno Attack!");
+            string gamemodeChosen = Console.ReadLine();
+            switch (gamemodeChosen)
+            {
+                case "1":
+                    return "Classic";
+                case "2":
+                    return "Attack";
+                default:
+                    return null;
+            }
         }
     }
 }
