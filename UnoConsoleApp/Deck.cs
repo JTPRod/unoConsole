@@ -21,6 +21,9 @@ namespace UnoConsoleApp
 
         private static List<Card> deck = new List<Card>();
 
+        private static Random rnd = new Random();
+
+
         /// <summary>
         /// Returns a random Uno Card from the deck
         /// </summary>
@@ -33,19 +36,48 @@ namespace UnoConsoleApp
             }
 
             //instantiate Random
-            Random rnd = new Random();
+            //Random rnd = new Random();
+            //rnd = new Random();
         
-            int random_index = rnd.Next(0, deck.Count());
+            int randomIndex = rnd.Next(0, deck.Count());
         
-            Card card = deck[random_index];
+            Card card = deck[randomIndex];
         
             card.setInPlay(true);
         
-            deck.RemoveAt(random_index);
+            deck.RemoveAt(randomIndex);
         
             return card;
         }
-        
+
+        /// <summary>
+        /// This simulates the experience of "hitting the button" in "Uno Attack" 
+        /// where you have a random chance to receive a random number of cards or no cards at all.
+        /// </summary>
+        /// <returns>A List of Cards containing a random number of cards (up to 12) or no cards.</returns>
+        public static List<Card> PressAttackButton()
+        {
+            //create list to hold cards that will be returned
+            List<Card> cards = new List<Card>();
+
+            //Randomly decides if any cards will be given
+            int randomChance = rnd.Next(0, 100);
+
+            if (randomChance > 60)
+            {
+                //if cards are given, decides a random number of cards between one and twelve to give
+                int randomInt = rnd.Next(1, 13);
+
+                //Adds randomly selected number of cards to the list of cards
+                for (int i = 0; i < randomInt; i++)
+                {
+                    cards.Add(Draw());
+                }
+            }
+
+            return cards;
+        }
+
         /// <summary>
         /// This adds the cards that are not in play back into the deck
         /// </summary>
@@ -68,5 +100,5 @@ namespace UnoConsoleApp
                 }
             }
         }
-        }
-        }
+    }
+}
