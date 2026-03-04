@@ -33,7 +33,7 @@ namespace UnoConsoleApp
 
         private static Card topCard = null;
 
-        public bool isAttack = false; //Indicates if player wants to play UnoAttack or Traditional Uno
+        public static bool isAttack; //Indicates if player wants to play UnoAttack or Traditional Uno
 
 
 
@@ -47,34 +47,53 @@ namespace UnoConsoleApp
         public static void Main()
         {
             bool keepPlaying = true;
+            bool validGamemode = false;
             do
             {
-                switch (gameState)
-                {
-                    case GameState.SETUP:
-                        StartGame();
-                        break;
-
-                    case GameState.PLAY:
-                        PlayGame();
-                        break;
-
-                    case GameState.GAMEOVER:
-                        string playerResponse = UI.PromptPlayAgain();
-
-                        if (playerResponse == "N" || playerResponse == "n")
-                        {
-                            keepPlaying = false;
-                        }
-                        else if (playerResponse == "Y" || playerResponse == "y")
-                        {
-                            ResetGame();
-                            gameState = GameState.SETUP;
-                        }
-                        break;
-                    default:
-                        break;
+                while (validGamemode == false){
+                    string gamemode = UI.promptGamemode();
+                    if (gamemode == "Classic")
+                    {
+                        // play classic
+                        isAttack = false;
+                        validGamemode = true;
+                    } else if (gamemode == "Attack")
+                    {
+                        // play attack
+                        isAttack = true;
+                        validGamemode = true;
+                    } else
+                    {
+                        validGamemode = false;
+                    }
                 }
+
+                    switch (gameState)
+                    {
+                        case GameState.SETUP:
+                            StartGame();
+                            break;
+
+                        case GameState.PLAY:
+                            PlayGame();
+                            break;
+
+                        case GameState.GAMEOVER:
+                            string playerResponse = UI.PromptPlayAgain();
+
+                            if (playerResponse == "N" || playerResponse == "n")
+                            {
+                                keepPlaying = false;
+                            }
+                            else if (playerResponse == "Y" || playerResponse == "y")
+                            {
+                                ResetGame();
+                                gameState = GameState.SETUP;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
 
             } while (keepPlaying);
         }
