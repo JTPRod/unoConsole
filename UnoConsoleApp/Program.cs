@@ -3,6 +3,16 @@
 GameManager.Main();
 
 
+//for(int i = 0; i < 20; i++)
+//{
+//    Console.WriteLine("Attempt " + i + ":");
+//    List<Card> cards = Deck.PressAttackButton();
+//    Console.WriteLine(cards.Count + " cards were drawn\n");
+//}
+
+
+
+
 //AI aI = new AI();
 //
 //Random r = new Random();

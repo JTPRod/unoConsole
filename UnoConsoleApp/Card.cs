@@ -36,6 +36,7 @@ namespace UnoConsoleApp
         /// <returns>This card's type</returns>
         public string getType()
         {
+            if (GameManager.isAttack && type == "DrawTwo") return "x2"; //display that card differently when playing Uno Attack
             return type;
         }
 

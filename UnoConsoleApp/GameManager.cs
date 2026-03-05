@@ -194,7 +194,7 @@ namespace UnoConsoleApp
             }
 
             //Player draws cards and turn ends if under the effects of a "Draw Two" Card
-            if (drawTwo > 0)
+            if (drawTwo > 0 && !isAttack)
             {
                 Console.WriteLine("\nDraw Two Card in play! Player must draw two cards and skip their turn!");
 
@@ -211,7 +211,42 @@ namespace UnoConsoleApp
                     Console.ForegroundColor = ConsoleColor.White;
 
                     Console.WriteLine(" and added it to your hand.");
-                    playerHand.AddCard(Deck.Draw());
+                    playerHand.AddCard(c);
+
+                    Console.Write("\n(Hit Enter to Continue)");
+                    string pause = Console.ReadLine();
+                }
+                return;
+            }
+
+            //Player hits "attack" button and turn ends if under the effects of a "Draw Two" Card in Uno Attack
+            if (drawTwo > 0 && isAttack)
+            {
+                Console.WriteLine("\nx2 Card in play! Player must hit attack button twice and skip their turn!");
+
+                for (int i = 0; drawTwo > 0; drawTwo--)
+                {
+                    Console.WriteLine("\nYou hit the attack button!");
+                    List<Card> cardsDrawn = Deck.PressAttackButton();
+
+                    if(cardsDrawn.Count > 0) Console.WriteLine("\nYou received " + cardsDrawn.Count + " cards, and added them to your hand!");
+                    if (cardsDrawn.Count == 0) Console.WriteLine("\nNo cards came out!");
+                    
+                    //Console.Write("\nYou drew a ");
+                    //if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
+                    //if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
+                    //if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
+                    //if (c.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
+                    //if (c.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
+                    //Console.Write(c.getColor() + " : " + c.getType());
+                    //Console.ForegroundColor = ConsoleColor.White;
+                    //
+                    //Console.WriteLine(" and added it to your hand.");
+
+                    foreach(Card c in cardsDrawn)
+                    {
+                        playerHand.AddCard(c);
+                    }
 
                     Console.Write("\n(Hit Enter to Continue)");
                     string pause = Console.ReadLine();
@@ -275,13 +310,26 @@ namespace UnoConsoleApp
             }
 
             //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
-            if (drawTwo > 0)
+            if (drawTwo > 0 && !isAttack)
             {
                 Console.WriteLine("\nDraw Two Card in play! Opponent must draw two cards and skip their turn!");
 
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
                     opponent.DrawCard();
+                }
+                return;
+            }
+
+
+            //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
+            if (drawTwo > 0 && isAttack)
+            {
+                Console.WriteLine("\nx2 Card in play! Opponent must hit attack button twice and skip their turn!");
+
+                for (int i = 0; drawTwo > 0; drawTwo--)
+                {
+                    opponent.Attack();
                 }
                 return;
             }

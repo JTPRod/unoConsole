@@ -116,6 +116,25 @@ namespace UnoConsoleApp
         }
 
         /// <summary>
+        /// The Computer/AI/Opponent hits the "Attack" button
+        /// </summary>
+        public void Attack()
+        {
+            List<Card> cards = Deck.PressAttackButton();
+
+            if(cards.Count > 0)
+            {
+                Console.WriteLine("\nThe opponent hit the attack button and received " + cards.Count() + "cards!");
+                foreach (Card card in cards)
+                {
+                    hand.AddCard(card);
+                }
+                return;
+            }
+            Console.WriteLine("\nThe opponent hit the attack button, but no cards came out!");
+        }
+
+        /// <summary>
         /// Selects a random Card Color
         /// </summary>
         /// <returns>Card Color that was selected</returns>
