@@ -113,6 +113,8 @@ namespace UnoConsoleApp
             if (turn == 1)
             {
                 UI.DisplayCurrentState(opponent.getHandSize(), drawTwo, skip, topCard, playerHand);
+                Console.WriteLine("================================================\n");
+
                 UI.DisplayTurn(turn);
                 PlayerTurn();
                 turn = 2;
@@ -225,31 +227,8 @@ namespace UnoConsoleApp
                 Console.WriteLine("\nx2 Card in play! Player must hit attack button twice and skip their turn!");
 
                 for (int i = 0; drawTwo > 0; drawTwo--)
-                {
-                    Console.WriteLine("\nYou hit the attack button!");
-                    List<Card> cardsDrawn = Deck.PressAttackButton();
-
-                    if(cardsDrawn.Count > 0) Console.WriteLine("\nYou received " + cardsDrawn.Count + " cards, and added them to your hand!");
-                    if (cardsDrawn.Count == 0) Console.WriteLine("\nNo cards came out!");
-                    
-                    //Console.Write("\nYou drew a ");
-                    //if (c.getColor() == "Green") Console.ForegroundColor = ConsoleColor.Green;
-                    //if (c.getColor() == "Red") Console.ForegroundColor = ConsoleColor.Red;
-                    //if (c.getColor() == "Yellow") Console.ForegroundColor = ConsoleColor.Yellow;
-                    //if (c.getColor() == "Blue") Console.ForegroundColor = ConsoleColor.Blue;
-                    //if (c.getColor() == "NULL") Console.ForegroundColor = ConsoleColor.White;
-                    //Console.Write(c.getColor() + " : " + c.getType());
-                    //Console.ForegroundColor = ConsoleColor.White;
-                    //
-                    //Console.WriteLine(" and added it to your hand.");
-
-                    foreach(Card c in cardsDrawn)
-                    {
-                        playerHand.AddCard(c);
-                    }
-
-                    Console.Write("\n(Hit Enter to Continue)");
-                    string pause = Console.ReadLine();
+                {                   
+                    PlayerAttack();
                 }
                 return;
             }
@@ -385,7 +364,7 @@ namespace UnoConsoleApp
                 skip = true;
             }
 
-            if (topCard.getType() == "DrawTwo")
+            if (topCard.getType() == "DrawTwo" || topCard.getType() == "x2")
             {
                 drawTwo += 2;
             }
@@ -397,8 +376,8 @@ namespace UnoConsoleApp
         public static void PlayerDrawUntilCanPlay()
         {
             bool noPlayableCard = true;
-            //Draw cards until a card can be played
-            while (noPlayableCard)
+            //Draw cards until a card can be played (if not using "Uno Attack" rules.
+            while (noPlayableCard && !isAttack)
             {
                 Card c = Deck.Draw();
 
@@ -462,6 +441,28 @@ namespace UnoConsoleApp
                     string pause = Console.ReadLine();
                 }
             }
+        }
+
+
+        /// <summary>
+        /// The player hits the "Attack" button, and has a chance to recieve a random number of cards, which they will add to their hand.
+        /// </summary>
+        public static void PlayerAttack()
+        {   
+            Console.WriteLine("\nYou hit the attack button!");
+            List<Card> cardsDrawn = Deck.PressAttackButton();
+
+            if (cardsDrawn.Count > 0) Console.WriteLine("\nYou received " + cardsDrawn.Count + " cards, and added them to your hand!");
+            if (cardsDrawn.Count == 0) Console.WriteLine("\nNo cards came out!");
+
+            foreach (Card c in cardsDrawn)
+            {
+                playerHand.AddCard(c);
+            }
+
+            Console.Write("\n(Hit Enter to Continue)");
+            string pause = Console.ReadLine();
+            
         }
     }
 }

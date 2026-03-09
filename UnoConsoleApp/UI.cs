@@ -5,7 +5,6 @@
         public static void DisplayTurn(int turn)
         {
             if(turn == 1){
-                Console.WriteLine("================================================\n");
                 Console.WriteLine("It is YOUR turn");
             } else {
                 Console.WriteLine("================================================\n");
@@ -56,7 +55,8 @@
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.WriteLine("Your Hand:");
-                Console.WriteLine("[0] - (Draw Cards)");
+                if(!GameManager.isAttack) Console.WriteLine("[0] - (Draw Cards)");
+                if(GameManager.isAttack) Console.WriteLine("[0] - (Hit Attack Button)");
                 for (int i = 0; i < playerHand.GetHandSize(); i++)
                 {
                     Card card = playerHand.GetHand()[i];
@@ -87,8 +87,15 @@
 
                 else if (inputIndex == 0)
                 {
-                    Console.WriteLine("\nYou draw cards until you have a card you can play!");
-                    GameManager.PlayerDrawUntilCanPlay();
+                    if (!GameManager.isAttack)
+                    {
+                        Console.WriteLine("\nYou draw cards until you have a card you can play!");
+                        GameManager.PlayerDrawUntilCanPlay();
+                    }
+                    if(GameManager.isAttack)
+                    {
+                        GameManager.PlayerAttack();
+                    }
                     return null;
                 }
 

@@ -36,11 +36,6 @@ namespace UnoConsoleApp
 
             foreach (Card card in cards)
             {
-                //if (card.getColor() == "NULL")
-                //{
-                //    Console.WriteLine("");
-                //}
-
                 if (GameManager.ValidateCard(card))
                 {
                     cardToPlay = card;
@@ -79,31 +74,43 @@ namespace UnoConsoleApp
 
                 while (noPlayableCard)
                 {
-                    Card c = Deck.Draw();
-                    UI.DisplayComputerDrawCard();
-
-                    if (GameManager.ValidateCard(c))
+                    if(!GameManager.isAttack)
                     {
-                        noPlayableCard = false;
-                        UI.DisplayComputerPlayCard(c);
-                        GameManager.PlayCard(c);
+                        Card c = Deck.Draw();
+                        UI.DisplayComputerDrawCard();
 
-                        if (hand.GetHandSize() == 1)
+                        if (GameManager.ValidateCard(c))
                         {
-                            UI.Uno();
+                            noPlayableCard = false;
+                            UI.DisplayComputerPlayCard(c);
+                            GameManager.PlayCard(c);
+
+                            if (hand.GetHandSize() == 1)
+                            {
+                                UI.Uno();
+                            }
+                            else if (hand.GetHandSize() == 0)
+                            {
+                                UI.DeclareWinner(2);
+                                GameManager.gameState = GameState.GAMEOVER;
+                            }
                         }
-                        else if (hand.GetHandSize() == 0)
+                        else
                         {
-                            UI.DeclareWinner(2);
-                            GameManager.gameState = GameState.GAMEOVER;
+                            hand.AddCard(c);
                         }
+
                     }
                     else
                     {
-                        hand.AddCard(c);
-                    }
-                }
+                        Console.WriteLine("The opponent has no playable cards, so they hit the Attack Button!");
 
+                        this.Attack();
+
+                        noPlayableCard = false;
+                    }
+
+                }
             }
         }
         /// <summary>
@@ -124,7 +131,7 @@ namespace UnoConsoleApp
 
             if(cards.Count > 0)
             {
-                Console.WriteLine("\nThe opponent hit the attack button and received " + cards.Count() + "cards!");
+                Console.WriteLine("\nThe opponent hit the attack button and received " + cards.Count() + " cards!");
                 foreach (Card card in cards)
                 {
                     hand.AddCard(card);
