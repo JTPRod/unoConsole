@@ -47,9 +47,9 @@ namespace UnoConsoleApp
         public static void Main()
         {
             bool keepPlaying = true;
+            bool validGamemode = false;
             do
             {
-                bool validGamemode = false;
                 while (validGamemode == false){
                     string gamemode = UI.promptGamemode();
                     if (gamemode == "Classic")
@@ -90,6 +90,8 @@ namespace UnoConsoleApp
                                 ResetGame();
                                 gameState = GameState.SETUP;
                             }
+
+                            validGamemode = false;
                             break;
                         default:
                             break;
