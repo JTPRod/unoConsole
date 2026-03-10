@@ -46,7 +46,7 @@ namespace UnoConsoleApp
             if (cardToPlay != null)
             {
                 //Select color if card was wild card
-                if (cardToPlay.getType() == "Wild" || cardToPlay.getType() == "wild" || cardToPlay.getColor() == "NULL")
+                if (cardToPlay.getType() == "Wild" || cardToPlay.getType() == "wild" || cardToPlay.getColor() == "NULL" || cardToPlay.getType() == "Wild +4" || cardToPlay.getType() == "Wild x2")
                 {
                     string color = SelectColor();
 
@@ -189,7 +189,7 @@ namespace UnoConsoleApp
                 if (cards.Count() <= 0) break;
                 Card card = cards[0];
                 card.setInPlay(false);
-                if (card.getType() == "Wild" || card.getType() == "wild")
+                if (card.getType() == "Wild" || card.getType() == "wild" || card.getType() == "Wild x2" || card.getType() == "Wild +4")
                 {
                     card.setColor("null");
                 }

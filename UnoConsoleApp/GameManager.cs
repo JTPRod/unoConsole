@@ -47,9 +47,9 @@ namespace UnoConsoleApp
         public static void Main()
         {
             bool keepPlaying = true;
-            bool validGamemode = false;
             do
             {
+                bool validGamemode = false;
                 while (validGamemode == false){
                     string gamemode = UI.promptGamemode();
                     if (gamemode == "Classic")
@@ -167,7 +167,7 @@ namespace UnoConsoleApp
                 if (cards.Count() <= 0) break;
                 Card card = cards[0];
                 card.setInPlay(false);
-                if (card.getType() == "Wild" || card.getType() == "wild")
+                if (card.getType() == "Wild" || card.getType() == "wild" || card.getType() == "Wild +4" || card.getType() == "Wild x2")
                 {
                     card.setColor("null");
                 }
@@ -198,7 +198,9 @@ namespace UnoConsoleApp
             //Player draws cards and turn ends if under the effects of a "Draw Two" Card
             if (drawTwo > 0 && !isAttack)
             {
-                Console.WriteLine("\nDraw Two Card in play! Player must draw two cards and skip their turn!");
+                if (drawTwo == 2) Console.WriteLine("\nDraw Two Card in play! Player must draw two cards and skip their turn!");
+                if (drawTwo == 4) Console.WriteLine("\nWild Draw Four Card in play! Opponent must draw four cards and skip their turn!");
+
 
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
@@ -255,7 +257,7 @@ namespace UnoConsoleApp
 
 
             //Select color if card was wild card
-            if (card.getType() == "Wild" || card.getType() == "wild")
+            if (card.getType() == "Wild" || card.getType() == "wild" || card.getType() == "Wild +4" || card.getType() == "Wild x2")
             {
                 string color = UI.PromptSelectColor();
 
@@ -291,7 +293,8 @@ namespace UnoConsoleApp
             //opponent draws cards and turn ends if under the effects of a "Draw Two" Card
             if (drawTwo > 0 && !isAttack)
             {
-                Console.WriteLine("\nDraw Two Card in play! Opponent must draw two cards and skip their turn!");
+                if(drawTwo == 2) Console.WriteLine("\nDraw Two Card in play! Opponent must draw two cards and skip their turn!");
+                if(drawTwo == 4) Console.WriteLine("\nWild Draw Four Card in play! Opponent must draw four cards and skip their turn!");
 
                 for (int i = 0; drawTwo > 0; drawTwo--)
                 {
@@ -331,7 +334,7 @@ namespace UnoConsoleApp
             //    return false;
             //}
 
-            if (card.getType() == "Wild" || card.getType() == "wild")
+            if (card.getType() == "Wild" || card.getType() == "wild" || card.getType() == "Wild +4" || card.getType() == "Wild x2")
             {
                 return true;
             }
@@ -364,15 +367,15 @@ namespace UnoConsoleApp
                 skip = true;
             }
 
-            if (topCard.getType() == "DrawTwo" || topCard.getType() == "x2")
+            if (topCard.getType() == "DrawTwo" || topCard.getType() == "x2" || topCard.getType() == "Wild x2")
             {
                 drawTwo += 2;
             }
 
-            if (topCard.getType() == "WildDraw" || topCard.getType() == "wilddraw")
+            if (topCard.getType() == "Wild +4")
             {
-                if ()
-            }
+                drawTwo += 4;
+            }           
         }
 
         /// <summary>
@@ -413,7 +416,7 @@ namespace UnoConsoleApp
                     Console.ForegroundColor = ConsoleColor.White;
 
                     //Select color if card was wild card
-                    if (c.getType() == "Wild" || c.getType() == "wild")
+                    if (c.getType() == "Wild" || c.getType() == "wild" || c.getType() == "Wild x2" || c.getType() == "Wild +4")
                     {
                         string color = UI.PromptSelectColor();
 

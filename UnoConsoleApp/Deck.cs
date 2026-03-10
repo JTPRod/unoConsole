@@ -17,11 +17,11 @@ namespace UnoConsoleApp
                                           new Card("Yellow", "1"), new Card("Yellow", "2"), new Card("Yellow", "3"), new Card("Yellow", "4"), new Card("Yellow", "5"), new Card("Yellow", "6"), new Card("Yellow", "7"), new Card("Yellow", "8"), new Card("Yellow", "9"), new Card("Yellow", "Skip"), new Card("Yellow", "DrawTwo"),
                                           new Card("Green", "1"), new Card("Green", "2"), new Card("Green", "3"), new Card("Green", "4"), new Card("Green", "5"), new Card("Green", "6"), new Card("Green", "7"), new Card("Green", "8"), new Card("Green", "9"), new Card("Green", "Skip"), new Card("Green", "DrawTwo"),
                                           new Card("Blue", "1"), new Card("Blue", "2"), new Card("Blue", "3"), new Card("Blue", "4"), new Card("Blue", "5"), new Card("Blue", "6"), new Card("Blue", "7"), new Card("Blue", "8"), new Card("Blue", "9"), new Card("Blue", "Skip"), new Card("Blue", "DrawTwo"),
-                                          new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild")];
+                                          new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "Wild"), new Card("NULL", "WildDraw"), new Card("NULL", "WildDraw"), new Card("NULL", "WildDraw"), new Card("NULL", "WildDraw")];
 
         private static List<Card> deck = new List<Card>();
 
-        private static Random rnd = new Random();
+        private static Random rnd = new Random(); 
 
 
         /// <summary>
