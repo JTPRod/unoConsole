@@ -368,6 +368,11 @@ namespace UnoConsoleApp
             {
                 drawTwo += 2;
             }
+
+            if (topCard.getType() == "WildDraw" || topCard.getType() == "wilddraw")
+            {
+                if ()
+            }
         }
 
         /// <summary>
