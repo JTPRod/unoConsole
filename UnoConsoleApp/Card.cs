@@ -36,7 +36,9 @@ namespace UnoConsoleApp
         /// <returns>This card's type</returns>
         public string getType()
         {
+            if ((!GameManager.isAttack) && type == "WildDraw") return "Wild +4"; //display that card differently when playing Uno Attack
             if (GameManager.isAttack && type == "DrawTwo") return "x2"; //display that card differently when playing Uno Attack
+            if (GameManager.isAttack && type == "WildDraw") return "Wild x2"; //display that card differently when playing Uno Attack
             return type;
         }
 
